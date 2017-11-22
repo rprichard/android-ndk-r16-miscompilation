@@ -3,5 +3,7 @@ APP_ABI := armeabi-v7a
 APP_CPPFLAGS += -frtti
 APP_CPPFLAGS += -fexceptions
 APP_CPPFLAGS += -std=c++11
-APP_STL := c++_shared
+APP_CPPFLAGS += -g0
+APP_CPPFLAGS += -Oz
+APP_STL := c++_static
 NDK_TOOLCHAIN_VERSION := clang

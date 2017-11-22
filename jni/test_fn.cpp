@@ -1,12 +1,7 @@
-#include <stdexcept>
-#include <string>
+extern "C" void impl(int *pi);
 
-extern void impl(const char*& bytes, const char * const end);
-
-void work(const std::string &data)
+extern "C" void work()
 {
-  const char *d = data.data();
-  return impl(d, data.data() + data.size());
+  int i = 10;
+  impl(&i);
 }
-
-

@@ -1,6 +1,6 @@
-#include <stdexcept>
-#include <string>
-#include <cstdio>
+#include <stdio.h>
+
+int g_counter;
 
 /**
  * The function with the faulty EH table encoding.
@@ -9,28 +9,28 @@
  * inlining and to permit different compiler options to be used for this
  * function only.
  */
-extern void work(const std::string &data);
+extern "C" void work();
 
-void
-impl(const char*& bytes, const char * const end)
+extern "C" void impl(int *pi)
 {
-  std::printf("bytes: %02x%02x\n", unsigned(bytes[0]), unsigned(bytes[1]));
-  if(bytes[0] != '\x80' || bytes[1] != '\x80') {
-    std::puts("$$$$$$$$$$$$$$$$ FAILED");
-  }
-  throw std::runtime_error{""};
+  throw 20;
 }
 
 int main()
 {
+  int val1 = ++g_counter;
   try {
-    work(std::string("\x80\x80", 2));
-  } catch(std::runtime_error&){
-    std::puts("expected1");
+    work();
+  } catch(int){
   }
+  int val2 = ++g_counter;
   try {
-    work(std::string("\x80\x80", 2));
-  } catch(std::runtime_error&){
-    std::puts("expected2");
-  } 
+    work();
+  } catch(int){
+  }
+  if (val1 != 1 || val2 != 2) {
+    printf("ERROR: (%d, %d) != (1, 2)\n", val1, val2);
+  } else {
+    printf("SUCCESS\n");
+  }
 }
